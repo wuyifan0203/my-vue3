@@ -1,5 +1,5 @@
 import { render } from "./render";
-import { createVNode } from "./VNode";
+import { createVNode } from "./vnode";
 
 export function createApp(rootCompontent) { 
     return {
