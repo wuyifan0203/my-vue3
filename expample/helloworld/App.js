@@ -1,4 +1,4 @@
-import { setSourceMapRange } from "typescript"
+import { h } from "../../lib/my-mini-vue.esm.js";
 
 export const App = {
     // <template></template> 
