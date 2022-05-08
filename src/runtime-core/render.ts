@@ -6,9 +6,11 @@ export function render(vnode,container) {
 }
 
 function patch(vnode,container){
-    // 判断类型，是组件？ 还是元素 
+    // 判断类型，是组件？ 还是元素
+    // TODO
+    // processElement()
 
-    processComponent(vnode,container)
+    processComponent(vnode,container);
 
 }
 
