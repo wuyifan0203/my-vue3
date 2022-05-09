@@ -4,7 +4,13 @@ export const App = {
     // <template></template> 
     // 或 render函数
     render() {
-        return h("div", "hi ,It 's " + this.msg);
+        return h("div", {
+            id:"root",
+            class:["red","blue"]
+        },[
+            h("p",{class:"red"},"hi !"),
+            h("p",{class:"blue"}," It 's my vue 3")
+        ]);
     },
 
     // compostion Api
