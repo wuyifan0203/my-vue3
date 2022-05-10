@@ -24,7 +24,7 @@ function processElement(vnode, container) {
 
 function mountElement(vnode, container) {
     const { type, props, children } = vnode;
-    const el: HTMLElement = document.createElement(type);
+    const el: HTMLElement = vnode.el = document.createElement(type);
 
     // 判断是否为string，为string则为文本类型
     // 判断是否为array， 为array说明里面还有其他vnode，则需要继续调patch
@@ -43,6 +43,7 @@ function mountElement(vnode, container) {
 }
 function mountChildren(vnode, container) {
     vnode.forEach(vn =>
+        // 递归调用 patch
         patch(vn, container)
     )
 }
@@ -50,25 +51,28 @@ function mountChildren(vnode, container) {
 function processComponent(vnode, container) {
     // 挂载组件
     mountComponent(vnode, container)
-
 }
 
 
-function mountComponent(vnode, container) {
-    const instance = createComponentInstance(vnode);
+function mountComponent(initialVNode, container) {
+    const instance = createComponentInstance(initialVNode);
 
     setupComponent(instance);
-    setupRenderEffect(instance, container);
+    setupRenderEffect(instance, initialVNode, container);
 }
 
-function setupRenderEffect(instance, container) {
-    // 注意这里的 subTree 依然是一个 vnode
+function setupRenderEffect(instance, initialVNode, container) {
     // 需要继续 vnode -> patch
     // vnode -> element -> mount
-    const subTree = instance.render();
 
-    patch(subTree, container)
-
+    // 从实例上拿到代理好的 this，并绑定
+    const { proxy } = instance;
+    // 注意这里的 subTree 依然是一个 vnode
+    const subTree = instance.render.call(proxy);
+    // 递归调用 patch
+    patch(subTree, container);
+    // 此时 subTree 已经 mountElement 完毕，有了el
+    initialVNode.el = subTree.el;
 }
 
 
