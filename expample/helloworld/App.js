@@ -11,7 +11,10 @@ export const App = {
 
         return h("div", {
             id:"root",
-            class:["red"]
+            class:["red"],
+            onClick(){
+                console.log('onClick');
+            }
         },
         "hi , " + this.msg
         // [

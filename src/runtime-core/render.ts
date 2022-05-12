@@ -11,7 +11,7 @@ function patch(vnode, container) {
     // 判断类型，是组件？ 还是元素
     // TODO
     // processElement()
-    const {shapFlag} = vnode;
+    const { shapFlag } = vnode;
     if (shapFlag & shapFlags.ELEMENT) {
         processElement(vnode, container)
     } else if ((shapFlag & shapFlags.STATEFUL_COMPONENT)) {
@@ -25,7 +25,7 @@ function processElement(vnode, container) {
 }
 
 function mountElement(vnode, container) {
-    const { type, props, children,shapFlag } = vnode;
+    const { type, props, children, shapFlag } = vnode;
     const el: HTMLElement = vnode.el = document.createElement(type);
 
     // 判断是否为string，为string则为文本类型
@@ -35,10 +35,18 @@ function mountElement(vnode, container) {
     } else if (shapFlag & shapFlags.ARRAY_CHILDREN) {
         mountChildren(children, el)
     }
+    // 判断是否为 on 开头，第三个字母大写的事件名
+    const isOn = (key: string): boolean => /^on[A-Z]/.test(key);
 
     for (const key in props) {
         const value = props[key];
-        el.setAttribute(key, value)
+        if (isOn(key)) {
+            const event = key.slice(2).toLowerCase();
+            // 挂载事件
+            el.addEventListener(event,value)
+        } else {
+            el.setAttribute(key, value)
+        }
     }
 
     container.append(el)
