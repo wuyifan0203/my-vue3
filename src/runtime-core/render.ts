@@ -1,4 +1,5 @@
 import { isObject } from "../shared/index";
+import { shapFlags } from "../shared/shapFlags";
 import { createComponentInstance, setupComponent } from "./component"
 
 export function render(vnode, container) {
@@ -10,9 +11,10 @@ function patch(vnode, container) {
     // 判断类型，是组件？ 还是元素
     // TODO
     // processElement()
-    if (typeof vnode.type === 'string') {
+    const {shapFlag} = vnode;
+    if (shapFlag & shapFlags.ELEMENT) {
         processElement(vnode, container)
-    } else if (isObject(vnode.type)) {
+    } else if ((shapFlag & shapFlags.STATEFUL_COMPONENT)) {
         processComponent(vnode, container);
     }
 }
@@ -23,14 +25,14 @@ function processElement(vnode, container) {
 }
 
 function mountElement(vnode, container) {
-    const { type, props, children } = vnode;
+    const { type, props, children,shapFlag } = vnode;
     const el: HTMLElement = vnode.el = document.createElement(type);
 
     // 判断是否为string，为string则为文本类型
     // 判断是否为array， 为array说明里面还有其他vnode，则需要继续调patch
-    if (typeof children === 'string') {
+    if ((shapFlag & shapFlags.TEXT_CHILDREN)) {
         el.textContent = children;
-    } else if (Array.isArray(children)) {
+    } else if (shapFlag & shapFlags.ARRAY_CHILDREN) {
         mountChildren(children, el)
     }
 
