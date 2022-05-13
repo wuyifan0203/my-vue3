@@ -1,10 +1,13 @@
+import { shallowReadonly } from "../reactive/reactive";
+import { initProps } from "./componentProps";
 import { publicInstanceProxyHandlers } from "./componentPublicInstance";
 
 export function createComponentInstance(vnode: any) {
     const component = {
         vnode,
-        type:vnode.type,
-        setupState:null,
+        type: vnode.type,
+        setupState: {},
+        props: {}
     }
 
     return component
@@ -14,7 +17,7 @@ export function createComponentInstance(vnode: any) {
 export function setupComponent(instance) {
 
     // TODO  
-    // initProps()
+    initProps(instance, instance.vnode.props)
     // initSlots()
 
     setupStatefulComponent(instance)
@@ -24,29 +27,30 @@ export function setupComponent(instance) {
 function setupStatefulComponent(instance: any) {
     const component = instance.type;
 
-    instance.proxy = new Proxy({_:instance},publicInstanceProxyHandlers)
+    instance.proxy = new Proxy({ _: instance }, publicInstanceProxyHandlers)
 
     const { setup } = component;
+    // setup 可能返回一个 render 函数，
+    // 或者一个对象
     if (setup) {
-        // setup 可能返回一个 render 函数，
-        // 或者一个对象
-        const setupResult = setup(); 
-        handleSetupResult(instance,setupResult);
+        // 传入  props
+        const setupResult = setup(shallowReadonly(instance.props));
+        handleSetupResult(instance, setupResult);
     }
 }
-function handleSetupResult(instance,setupResult: any) {
+function handleSetupResult(instance, setupResult: any) {
     // TODO function
-    if(typeof setupResult === 'object'){
+    if (typeof setupResult === 'object') {
         // setupState 赋值操作
-        instance.setupState = setupResult; 
+        instance.setupState = setupResult;
     }
     finishComponentSetup(instance)
 }
 
-function finishComponentSetup (instance){
+function finishComponentSetup(instance) {
     const component = instance.type;
     // if(component.render){
-        instance.render = component.render;
+    instance.render = component.render;
     // }
 
 }
