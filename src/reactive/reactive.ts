@@ -1,19 +1,24 @@
+import { isObject } from "../shared/index"
 import { mutableHandlers, readonlyHanders, shallowReadonlyHanders } from "./baseHandler"
 
-function createActiveObject(obj:any,baseHandler) {
-    return new Proxy(obj,baseHandler)
+function createReactiveObject(target:any,baseHandler) {
+    if(!isObject(target)){
+        console.warn(`target ${target} is not a Object`);
+        return target
+    }
+    return new Proxy(target,baseHandler)
 }
 
 export function reactive(obj) {
-    return createActiveObject(obj, mutableHandlers )
+    return createReactiveObject(obj, mutableHandlers )
 }
 
 export function readonly(obj) {
-    return createActiveObject(obj,readonlyHanders)
+    return createReactiveObject(obj,readonlyHanders)
 }
 
 export function shallowReadonly(obj) {
-    return createActiveObject(obj, shallowReadonlyHanders)
+    return createReactiveObject(obj, shallowReadonlyHanders)
 }
 
 
