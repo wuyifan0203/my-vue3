@@ -1,5 +1,6 @@
 import { h } from "../../lib/my-mini-vue.esm.js";
 import { Foo } from "./Foo.js";
+import { Boo } from "./Boo.js";
 
 window.self = null
 
@@ -21,7 +22,17 @@ export const App = {
             [
                 h("p", { class: "red" }, "hi !"),
                 h("p", { class: "blue" }, " It 's my " + this.msg),
-                h(Foo, { count: 1 })
+                h(Foo, { count: 1 }),
+                h(Boo, {
+                    onAdd(a,b){
+                        console.log('on add 666666');
+                        console.log(a,b);
+                    },
+                    onAddFoo(a,b){
+                        console.log('on AddFoo 666666');
+                        console.log(a,b);
+                    }
+                })
             ]
         );
     },

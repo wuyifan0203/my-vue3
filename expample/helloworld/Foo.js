@@ -3,7 +3,7 @@ import { h } from "../../lib/my-mini-vue.esm.js ";
 export const Foo = {
     name: "Foo",
     setup(props) {
-        // 假设又个count
+        // 假设有个 count
         console.log(props);
         props.count++;
         console.log(props);
