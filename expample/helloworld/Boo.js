@@ -1,5 +1,5 @@
 import { h } from "../../lib/my-mini-vue.esm.js ";
-
+// emit
 export const Boo = {
     name: "Boo",
     setup(props,{emit}) {
