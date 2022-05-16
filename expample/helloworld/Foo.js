@@ -16,4 +16,4 @@ export const Foo = {
 }
 // 1.输出 props
 // 2.内部可以通过 this 访问到
-// 3.不可以被更改，是一个 shallo wReadonly
+// 3.不可以被更改，是一个 shallowReadonly

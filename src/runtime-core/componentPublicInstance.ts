@@ -1,7 +1,8 @@
 import { hasOwn } from "../shared/index.js";
 
 const publicProertiesMap = {
-    "$el": instance => instance.vnode.el
+    "$el": instance => instance.vnode.el,
+    "$slots":instance => instance.slots, 
 };
 
 export const publicInstanceProxyHandlers = {
