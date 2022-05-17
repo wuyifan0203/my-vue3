@@ -1,6 +1,7 @@
 import { h } from "../../lib/my-mini-vue.esm.js";
 import { Foo } from "./Foo.js";
 import { Boo } from "./Boo.js";
+import { Coo } from "./Coo.js";
 
 window.self = null
 
@@ -32,7 +33,8 @@ export const App = {
                         console.log('on AddFoo 666666');
                         console.log(a,b);
                     }
-                })
+                }),
+                h(Coo,{},[h("p",{},"Coo 's children")])
             ]
         );
     },
