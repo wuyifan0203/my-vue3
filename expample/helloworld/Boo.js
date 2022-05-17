@@ -19,5 +19,8 @@ export const Boo = {
         const p = h('p',{},'emmit test')
         return h('div', {}, [p,btn])
     },
-
 }
+
+// 1.内部可以通过 context 访问到
+// 2.支持 emit 事件调用
+// 3.支持穿参数

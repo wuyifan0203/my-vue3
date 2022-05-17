@@ -34,7 +34,14 @@ export const App = {
                         console.log(a,b);
                     }
                 }),
-                h(Coo,{},[h("p",{},"Coo 's children")])
+                h(Coo,{ class: "blue"},{
+                    header:({age})=>h("p",{},"Coo is Array children 1 "+age),
+                    footer:()=>h("p",{},"Coo is Array children 2"),
+                    default:()=>h("p",{},"Coo is Array children default"),
+                }),
+                // h(Coo,{ class: "blue"},{
+                //     default:()=>h("p",{},"Coo is Array children default"),
+                // }),
             ]
         );
     },
