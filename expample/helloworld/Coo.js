@@ -6,7 +6,8 @@ export const Coo = {
 
     },
     render() {
-        return h('div', {}, 'Coo:')
+        const coo = h('p',{},"this is coo")
+        return h('div', {}, [coo,this.$slots])
     },
 
 }
