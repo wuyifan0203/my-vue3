@@ -1,8 +1,10 @@
-import { h } from "../../lib/my-mini-vue.esm.js ";
+import { h,getCurrentInstance } from "../../lib/my-mini-vue.esm.js ";
 
 export const Foo = {
     name: "Foo",
     setup(props) {
+        const instance = getCurrentInstance();
+        console.log(instance);
         // 假设有个 count
         console.log(props);
         props.count++;

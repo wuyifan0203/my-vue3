@@ -35,10 +35,14 @@ function setupStatefulComponent(instance: any) {
     // setup 可能返回一个 render 函数，
     // 或者一个对象
     if (setup) {
+        setCurrentInstance(instance)
         // 传入  props
         const setupResult = setup(shallowReadonly(instance.props),{
             emit:instance.emit
         });
+
+        setCurrentInstance(null);
+        
         handleSetupResult(instance, setupResult);
     }
 }
@@ -59,3 +63,12 @@ function finishComponentSetup(instance) {
 
 }
 
+let currentInstance = null;
+
+export function getCurrentInstance() {
+    return currentInstance;
+}
+
+function setCurrentInstance(instance:any) {
+    currentInstance = instance;
+}
