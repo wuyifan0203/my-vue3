@@ -1,4 +1,4 @@
-import { h,createTextVNode } from "../../lib/my-mini-vue.esm.js";
+import { h,createTextVNode, getCurrentInstance } from "../../lib/my-mini-vue.esm.js";
 import { Foo } from "./Foo.js";
 import { Boo } from "./Boo.js";
 import { Coo } from "./Coo.js";
@@ -51,6 +51,8 @@ export const App = {
 
     // compostion Api
     setup() {
+        const instance = getCurrentInstance()
+        console.log(instance);
         return {
             msg: "my vue3"
         };
