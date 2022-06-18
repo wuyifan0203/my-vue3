@@ -1,6 +1,7 @@
 import { isObject } from "../shared/index";
 import { shapFlags } from "../shared/shapFlags";
 import { createComponentInstance, setupComponent } from "./component"
+import { Fragment, Text } from "./vnode";
 
 export function render(vnode, container) {
     // patch 统一处理
@@ -8,15 +9,35 @@ export function render(vnode, container) {
 }
 
 function patch(vnode, container) {
-    // 判断类型，是组件？ 还是元素
-    // TODO
-    // processElement()
-    const { shapFlag } = vnode;
-    if (shapFlag & shapFlags.ELEMENT) {
-        processElement(vnode, container)
-    } else if ((shapFlag & shapFlags.STATEFUL_COMPONENT)) {
-        processComponent(vnode, container);
+    const { shapFlag, type } = vnode;
+    switch (type) {
+        // 新增类型 Fragment 只渲染 children
+        case Fragment:
+            processFragment(vnode, container);
+            break;
+        case Text:
+            processText(vnode, container);
+            break;
+        default:
+            // 判断类型，是组件？ 还是元素
+            if (shapFlag & shapFlags.ELEMENT) {
+                processElement(vnode, container)
+            } else if ((shapFlag & shapFlags.STATEFUL_COMPONENT)) {
+                processComponent(vnode, container);
+            }
+            break;
     }
+
+}
+
+function processFragment(vnode, container) {
+    mountChildren(vnode, container)
+}
+
+function processText(vnode, container) {
+    const {children} = vnode;
+    const TextVNode =  vnode.el = document.createTextNode(children);
+    container.append(TextVNode)
 }
 
 function processElement(vnode, container) {
@@ -33,7 +54,7 @@ function mountElement(vnode, container) {
     if ((shapFlag & shapFlags.TEXT_CHILDREN)) {
         el.textContent = children;
     } else if (shapFlag & shapFlags.ARRAY_CHILDREN) {
-        mountChildren(children, el)
+        mountChildren(vnode, el)
     }
     // 判断是否为 on 开头，第三个字母大写的事件名
     const isOn = (key: string): boolean => /^on[A-Z]/.test(key);
@@ -43,7 +64,7 @@ function mountElement(vnode, container) {
         if (isOn(key)) {
             const event = key.slice(2).toLowerCase();
             // 挂载事件
-            el.addEventListener(event,value)
+            el.addEventListener(event, value)
         } else {
             el.setAttribute(key, value)
         }
@@ -52,7 +73,7 @@ function mountElement(vnode, container) {
     container.append(el)
 }
 function mountChildren(vnode, container) {
-    vnode.forEach(vn =>
+    vnode.children.forEach(vn =>
         // 递归调用 patch
         patch(vn, container)
     )

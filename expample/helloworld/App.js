@@ -1,4 +1,4 @@
-import { h } from "../../lib/my-mini-vue.esm.js";
+import { h,createTextVNode } from "../../lib/my-mini-vue.esm.js";
 import { Foo } from "./Foo.js";
 import { Boo } from "./Boo.js";
 import { Coo } from "./Coo.js";
@@ -25,19 +25,22 @@ export const App = {
                 h("p", { class: "blue" }, " It 's my " + this.msg),
                 h(Foo, { count: 1 }),
                 h(Boo, {
-                    onAdd(a,b){
+                    onAdd(a, b) {
                         console.log('on add 666666');
-                        console.log(a,b);
+                        console.log(a, b);
                     },
-                    onAddFoo(a,b){
+                    onAddFoo(a, b) {
                         console.log('on AddFoo 666666');
-                        console.log(a,b);
+                        console.log(a, b);
                     }
                 }),
-                h(Coo,{ class: "blue"},{
-                    header:({age})=>h("p",{},"Coo is Array children 1 "+age),
-                    footer:()=>h("p",{},"Coo is Array children 2"),
-                    default:()=>h("p",{},"Coo is Array children default"),
+                h(Coo, { class: "blue" }, {
+                    header: ({ age }) => [
+                        h("p", {}, "Coo is Array children 1 " + age),
+                        createTextVNode('Hello I love you !')
+                    ],
+                    footer: () => h("p", {}, "Coo is Array children 2"),
+                    default: () => h("p", {}, "Coo is Array children default"),
                 }),
                 // h(Coo,{ class: "blue"},{
                 //     default:()=>h("p",{},"Coo is Array children default"),
