@@ -1,4 +1,5 @@
 import { h,renderSlots } from "../../lib/my-mini-vue.esm.js ";
+import {Foo} from "./Foo.js";
 
 export const Coo = {
     name: "Coo",
@@ -16,7 +17,8 @@ export const Coo = {
             renderSlots(this.$slots,"header",{age}),
             coo,
             renderSlots(this.$slots,"footer"),
-            renderSlots(this.$slots,"default")
+            renderSlots(this.$slots,"default"),
+            h(Foo,{ count: 99 })
         ])
     },
 
