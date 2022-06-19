@@ -1,7 +1,8 @@
-import { h,createTextVNode, getCurrentInstance } from "../../lib/my-mini-vue.esm.js";
+import { h,createTextVNode, getCurrentInstance,provide } from "../../lib/my-mini-vue.esm.js";
 import { Foo } from "./Foo.js";
 import { Boo } from "./Boo.js";
 import { Coo } from "./Coo.js";
+import { Poo } from "./Poo.js";
 
 window.self = null
 
@@ -37,7 +38,8 @@ export const App = {
                 h(Coo, { class: "blue" }, {
                     header: ({ age }) => [
                         h("p", {}, "Coo is Array children 1 " + age),
-                        createTextVNode('Hello I love you !')
+                        createTextVNode('createTextVNode :Hello I love you !'),
+                        h(Poo)
                     ],
                     footer: () => h("p", {}, "Coo is Array children 2"),
                     default: () => h("p", {}, "Coo is Array children default"),
@@ -51,8 +53,12 @@ export const App = {
 
     // compostion Api
     setup() {
-        const instance = getCurrentInstance()
+        // 测试 getCurrentInstance
+        const instance = getCurrentInstance();
         console.log(instance);
+
+        // 测试 provide
+        provide('injectName','wyf')
         return {
             msg: "my vue3"
         };

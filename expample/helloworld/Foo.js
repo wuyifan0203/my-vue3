@@ -1,18 +1,27 @@
-import { h,getCurrentInstance } from "../../lib/my-mini-vue.esm.js ";
+import { h,getCurrentInstance,inject } from "../../lib/my-mini-vue.esm.js ";
 
 export const Foo = {
     name: "Foo",
     setup(props) {
+        // 测试 getCurrentInstance
         const instance = getCurrentInstance();
         console.log(instance);
+        // 测试 inject
+        const injectName = inject('injectName');
+        console.log(injectName);
+        // const injectAge = inject('injectAge',24)
+  
         // 假设有个 count
         console.log(props);
         props.count++;
         console.log(props);
+        return {
+            injectName
+        }
     },
     //  count
     render() {
-        return h('div', {}, 'Foo:' + this.count)
+        return h('div', {}, 'Foo:' + this.count + ' inject name: ' + this.injectName)
     },
 
 }
